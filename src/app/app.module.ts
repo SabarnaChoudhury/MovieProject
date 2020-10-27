@@ -11,14 +11,22 @@ import { NewReleasesComponent } from './new-releases/new-releases.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { NgbdDropdownForm } from './dropdown-form/dropdown-form.component';
+
+
+
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavOptionsComponent } from './nav-options/nav-options.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
+
+    NgbdDropdownForm
+
 
     HomepageNavbarComponent,
     HomepageFooterComponent,
@@ -27,6 +35,7 @@ import { NavOptionsComponent } from './nav-options/nav-options.component';
     SignupPageComponent,
     NewReleasesComponent,
     NavOptionsComponent
+
 
   ],
   imports: [
