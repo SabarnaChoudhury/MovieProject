@@ -2,28 +2,130 @@
     <div class="col">
       <div ngbDropdown class="d-inline-block">
         <button class="btn btn-outline-primary" id="dropdownForm1" ngbDropdownToggle>Toggle dropdown</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownForm1">
-          <form class="px-4 py-3">
-            <div class="form-group">
-              <label for="exampleDropdownFormEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
-            </div>
-            <div class="form-group">
-              <label for="exampleDropdownFormPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="dropdownCheck">
-              <label class="form-check-label" for="dropdownCheck">
-                Remember me
+        <div ngbDropdownMenu aria-labelledby="dropdownForm1" class="bg-dark">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="px-4 py-3 text-white bg-dark">
+          <div class="form-group">
+              <label>Email</label>
+              <input type="text" formControlName="email" placeholder="email@example.com" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                  <div *ngIf="f.email.errors.required">Email is required</div>
+                  <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label>Password</label>
+              <input type="password" formControlName="password" placeholder="Password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">Password is required</div>
+                  <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+              </div>
+          </div>
+            <div class="form-group form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="remember"> Remember me
               </label>
             </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-          </form>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+      </form>
           <div class="dropdown-divider"></div>
-          <button ngbDropdownItem>New around here? Sign up</button>
-          <button ngbDropdownItem>Forgot password?</button>
+          <button ngbDropdownItem (click)="show()" data-toggle="modal" data-target="#modal1" class="btn btn-info text-white">New around here? Sign up</button>
+          <button ngbDropdownItem (click)="show()" data-toggle="modal" data-target="#modal2" class="btn btn-info text-white">Forgot password?</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Creates the bootstrap modal where the image will appear -->
+
+  <div [style.display]="showModal ? 'block' : 'none'" class="modal" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content  bg-dark text-white">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Register</h4>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                        <div *ngIf="f.name.errors.required">Name is required</div>
+                        <div *ngIf="f.name.errors.pattern">Name must be a valid name</div>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">Email is required</div>
+                            <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                        </div>
+                      </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                            <div *ngIf="f.password.errors.required">Password is required</div>
+                            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                        </div>
+                  </div>
+              <div class="form-group form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" name="remember"> Remember me
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary">Sign up</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" (click) = "hide()">Close</button>
+        
+        </div>
+      </div>
+    </div>
+
+    <!-- Change Password Pop-up Window -->
+
+    <div [style.display]="showModal ? 'block' : 'none'" class="modal" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+          </div>
+          <div class="modal-body">
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                    
+                  <div class="form-group">
+                      <label>Email</label>
+                      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                      <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                          <div *ngIf="f.email.errors.required">Email is required</div>
+                          <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Old-Password</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required">Password is required</div>
+                        <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label>New-Password</label>
+                      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                          <div *ngIf="f.password.errors.required">Password is required</div>
+                          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                      </div>
+                    </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-dark" (click)="hide()">Close</button>
+          
+          </div>
+        </div>
+      </div>
+    </div>
